@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  rpismarthouse.monitoring.api:
+    image: rpismarthousemonitoringapi
+    build:
+      context: .
+      dockerfile: src/RpiSmartHouse.Monitoring.Api/Dockerfile

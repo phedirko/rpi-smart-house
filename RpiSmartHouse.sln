@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpiSmartHouse.Publisher", "src\RpiSmartHouse.Publisher\RpiSmartHouse.Publisher.csproj", "{EF793AD6-C177-400C-BEB1-A0D58E758DA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F974711C-2D1D-408B-8ED5-F30238262AB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpiSmartHouse.Monitoring.Api", "src\RpiSmartHouse.Monitoring.Api\RpiSmartHouse.Monitoring.Api.csproj", "{771EFD04-C484-4456-B4CE-A758D2DF7B98}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F2D49FB6-1CAA-4150-BB97-DFB1F7D234C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF793AD6-C177-400C-BEB1-A0D58E758DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF793AD6-C177-400C-BEB1-A0D58E758DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF793AD6-C177-400C-BEB1-A0D58E758DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF793AD6-C177-400C-BEB1-A0D58E758DA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{771EFD04-C484-4456-B4CE-A758D2DF7B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{771EFD04-C484-4456-B4CE-A758D2DF7B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{771EFD04-C484-4456-B4CE-A758D2DF7B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{771EFD04-C484-4456-B4CE-A758D2DF7B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2D49FB6-1CAA-4150-BB97-DFB1F7D234C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D49FB6-1CAA-4150-BB97-DFB1F7D234C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D49FB6-1CAA-4150-BB97-DFB1F7D234C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D49FB6-1CAA-4150-BB97-DFB1F7D234C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EF793AD6-C177-400C-BEB1-A0D58E758DA2} = {F974711C-2D1D-408B-8ED5-F30238262AB1}
+		{771EFD04-C484-4456-B4CE-A758D2DF7B98} = {F974711C-2D1D-408B-8ED5-F30238262AB1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F01604B2-1333-40E9-9B93-AEB95826E7B7}
+	EndGlobalSection
+EndGlobal
