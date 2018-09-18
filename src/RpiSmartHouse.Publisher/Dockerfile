@@ -1,20 +1,14 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM microsoft/aspnetcore-build:2 AS build-env
 WORKDIR /app
-EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
-WORKDIR /src
-COPY RpiSmartHouse.sln ./
-COPY src/RpiSmartHouse.Publisher/RpiSmartHouse.Publisher.csproj src/RpiSmartHouse.Publisher/
-RUN dotnet restore -nowarn:msb3202,nu1503
-COPY . .
-WORKDIR /src/src/RpiSmartHouse.Publisher
-RUN dotnet build -c Release -o /app
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish -c Release -o /app
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-FROM base AS final
+FROM microsoft/dotnet:latest
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "RpiSmartHouse.Publisher.Api.dll"]
+
+COPY --from=build-env /app/out ./
+ENTRYPOINT ["dotnet", "RpiSmartHouse.Publisher.dll"]

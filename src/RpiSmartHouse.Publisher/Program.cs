@@ -29,10 +29,9 @@ namespace RpiSmartHouse.Publisher
 
             while (true)
             {
-                Thread.Sleep(750);
                 await _mqttClient.PublishAsync(TEMP_TOPIC, $"Current temp is {DateTime.Now.Millisecond / 10} degrees");
                 Console.WriteLine("Published!");
-                Thread.Sleep(750);
+                Thread.Sleep(10000);
             }
         }
     }
