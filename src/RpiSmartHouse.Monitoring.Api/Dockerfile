@@ -1,20 +1,14 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /app
-EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
-WORKDIR /src
-COPY RpiSmartHouse.sln ./
-COPY src/RpiSmartHouse.Monitoring.Api/RpiSmartHouse.Monitoring.Api.csproj src/RpiSmartHouse.Monitoring.Api/
-RUN dotnet restore -nowarn:msb3202,nu1503
-COPY . .
-WORKDIR /src/src/RpiSmartHouse.Monitoring.Api
-RUN dotnet build -c Release -o /app
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish -c Release -o /app
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-FROM base AS final
+FROM microsoft/dotnet:2.1-aspnetcore-runtime-stretch-slim AS runtime
 WORKDIR /app
-COPY --from=publish /app .
+
+COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "RpiSmartHouse.Monitoring.Api.dll"]

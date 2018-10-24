@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace RpiSmartHouse.Publisher
 {
-    class Program
+    public class Program
     {
         private static IMqttClient _mqttClient;
-        private static string TEMP_TOPIC = "TEMP_TOPIC";
+        private static string TEMP_TOPIC = "TEMP_RESU";
 
         static void Main(string[] args)
         {
@@ -21,7 +21,7 @@ namespace RpiSmartHouse.Publisher
             var _mqttClient = new MqttFactory().CreateMqttClient();
 
             var options = new MqttClientOptionsBuilder()
-                    .WithWebSocketServer("localhost:9001/mqtt")
+                    .WithWebSocketServer("mqtt:9001/mqtt")
                     .Build();
 
 

@@ -1,19 +1,6 @@
-version: '3'
+version: '3.6'
 
 services:
-  # rpismarthouse.monitoring.api:
-  #   image: rpi_sh_api
-  #   ports: 
-  #     - "5001:5001"
-  #   build:
-  #     context: .
-  #     dockerfile: src/RpiSmartHouse.Monitoring.Api/Dockerfile
-
-  rpismarthouse.publisher.fake:
-    image: rpi_sh_publihser_fake
-    build:
-      context: .
-      dockerfile: src/RpiSmartHouse.Publisher/Dockerfile
 
   mqtt:
     image: pascaldevink/rpi-mosquitto
@@ -21,3 +8,32 @@ services:
     ports:
       - "9001:9001"
       - "1883:1883"
+    networks: 
+      - back
+    
+
+  monitoring_api:
+    image: rpi_api
+    container_name: rpi_monitoring_api
+    ports: 
+      - "5001:5001"
+    build:
+      context: ./src/RpiSmartHouse.Monitoring.Api/
+      dockerfile: Dockerfile
+    depends_on:
+      - mqtt
+    networks: 
+      - back
+
+  fake_publisher:
+    image: rpi_fake_publihser
+    build:
+      context: ./src/RpiSmartHouse.Publisher
+      dockerfile: Dockerfile
+    depends_on:
+      - mqtt
+    networks: 
+      - back
+
+networks:
+    back:

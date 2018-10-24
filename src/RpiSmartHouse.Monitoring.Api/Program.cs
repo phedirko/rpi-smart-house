@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace RpiSmartHouse.Monitoring.Api
 {
@@ -12,6 +13,7 @@ namespace RpiSmartHouse.Monitoring.Api
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(c => c.AddJsonFile("appsettings.json"))
                 .UseStartup<Startup>()
                 .UseUrls("http://*:5001")
                 .Build();

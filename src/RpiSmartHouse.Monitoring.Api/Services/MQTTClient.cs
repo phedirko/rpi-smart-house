@@ -1,5 +1,6 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using System;
 using System.Text;
 
 namespace RpiSmartHouse.Monitoring.Api.Services
@@ -12,18 +13,26 @@ namespace RpiSmartHouse.Monitoring.Api.Services
 
         public MQTTClient(IMqttClient mqttClient, IEventRepository eventRepository, string topic)
         {
-            _mqttClient = mqttClient;
-            _eventRepository = eventRepository;
-            _topic = topic;
+            try
+            {
 
-            var options = new MqttClientOptionsBuilder()
-                .WithWebSocketServer("localhost:9001/mqtt")
-                .Build();
+                _mqttClient = mqttClient;
+                _eventRepository = eventRepository;
+                _topic = topic;
 
-            _mqttClient.ConnectAsync(options).GetAwaiter().GetResult();
-            _mqttClient.SubscribeAsync(_topic).GetAwaiter().GetResult();
+                var options = new MqttClientOptionsBuilder()
+                    .WithWebSocketServer("mqtt:9001/mqtt")
+                    .Build();
 
-            _mqttClient.ApplicationMessageReceived += UpdateStatus;
+                _mqttClient.ConnectAsync(options).GetAwaiter().GetResult();
+                _mqttClient.SubscribeAsync(_topic).GetAwaiter().GetResult();
+
+                _mqttClient.ApplicationMessageReceived += UpdateStatus;
+            }
+            catch(Exception ex)
+            {
+                System.Console.WriteLine($"{ex.Message}");
+            }
         }
 
         private void UpdateStatus(object sender, MqttApplicationMessageReceivedEventArgs eventArgs)
