@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2 AS build-env
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /app
 
 COPY *.csproj ./
@@ -7,8 +7,8 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:latest
+FROM microsoft/dotnet:2.1-aspnetcore-runtime-stretch-slim AS runtime
 WORKDIR /app
 
-COPY --from=build-env /app/out ./
+COPY --from=build /app/out ./
 ENTRYPOINT ["dotnet", "RpiSmartHouse.Publisher.dll"]

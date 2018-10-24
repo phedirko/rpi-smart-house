@@ -1,0 +1,5 @@
+localhost:80 {
+  proxy /app monitoring_api:5001 {
+    without /app
+  }
+}

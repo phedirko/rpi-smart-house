@@ -2,6 +2,18 @@ version: '3.6'
 
 services:
 
+  proxy:
+    image: abiosoft/caddy
+    container_name: caddy
+    ports:
+      - 80:80
+    volumes:
+      - ./proxy/Caddyfile:/etc/Caddyfile
+    depends_on:
+      - monitoring_api
+    networks: 
+      - back
+
   mqtt:
     image: pascaldevink/rpi-mosquitto
     container_name: mosquitto
@@ -25,15 +37,15 @@ services:
     networks: 
       - back
 
-  fake_publisher:
-    image: rpi_fake_publihser
-    build:
-      context: ./src/RpiSmartHouse.Publisher
-      dockerfile: Dockerfile
-    depends_on:
-      - mqtt
-    networks: 
-      - back
+  # fake_publisher:
+  #   image: rpi_fake_publihser
+  #   build:
+  #     context: ./src/RpiSmartHouse.Publisher
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - mqtt
+  #   networks: 
+  #     - back
 
 networks:
     back:
