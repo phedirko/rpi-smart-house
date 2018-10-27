@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using RpiSmartHouse.Monitoring.Api.Contracts.Configuration;
 using RpiSmartHouse.Monitoring.Api.Services;
 
 namespace RpiSmartHouse.Monitoring.Api.Controllers
@@ -9,7 +11,7 @@ namespace RpiSmartHouse.Monitoring.Api.Controllers
     {
         private readonly IEventRepository _eventRepository;
 
-        public ValuesController(IEventRepository eventRepository)
+        public ValuesController(IEventRepository eventRepository, IOptions<AppConfig> options)
         {
             _eventRepository = eventRepository;
         }

@@ -19,6 +19,8 @@ namespace RpiSmartHouse.Monitoring.Api
 
         public IConfiguration Configuration { get; }
 
+        public AppConfig _appConfig { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -28,11 +30,7 @@ namespace RpiSmartHouse.Monitoring.Api
             {
                 return new MqttFactory().CreateMqttClient();
             });
-            services.AddTransient<MQTTClient>(
-                    c => new MQTTClient(
-                        c.GetService<IMqttClient>(), 
-                        c.GetService<IEventRepository>(),
-                        "TEMP_TOPIC"));
+            services.AddTransient<MQTTClient>(c => new MQTTClient(c.GetService<IMqttClient>(), c.GetService<IEventRepository>(),"TEMP_TOPIC"));
             services.BuildServiceProvider().GetRequiredService<MQTTClient>();
             services.AddLogging(lb => lb.AddSerilog(dispose: true));
             services.AddOptions();
