@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MQTTnet;
 using MQTTnet.Client;
 using RpiSmartHouse.Monitoring.Api.Contracts.Configuration;
+using RpiSmartHouse.Monitoring.Api.Extensions;
 using RpiSmartHouse.Monitoring.Api.Services;
 using Serilog;
 
@@ -14,6 +15,11 @@ namespace RpiSmartHouse.Monitoring.Api
     {
         public Startup(IConfiguration configuration)
         {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
+
             Configuration = configuration;
         }
 
@@ -21,20 +27,21 @@ namespace RpiSmartHouse.Monitoring.Api
 
         public AppConfig _appConfig { get; }
 
+        public MQDispatcher mqDispatcher;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMqtt();
+
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddSingleton<MessagePersistance>();
-            services.AddTransient<IMqttClient>(c =>
-            {
-                return new MqttFactory().CreateMqttClient();
-            });
-            services.AddTransient<MQTTClient>(c => new MQTTClient(c.GetService<IMqttClient>(), c.GetService<IEventRepository>(),"TEMP_TOPIC"));
-            services.BuildServiceProvider().GetRequiredService<MQTTClient>();
+
             services.AddLogging(lb => lb.AddSerilog(dispose: true));
             services.AddOptions();
             services.Configure<AppConfig>(Configuration);
+            mqDispatcher = services.GetMQDispatcher();
+            mqDispatcher.Start();
             services.AddMvc();
         }
 

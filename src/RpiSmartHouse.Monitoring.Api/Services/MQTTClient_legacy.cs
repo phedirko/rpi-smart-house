@@ -5,13 +5,13 @@ using System.Text;
 
 namespace RpiSmartHouse.Monitoring.Api.Services
 {
-    public class MQTTClient
+    public class MQTTClient_Legacy
     {
         private readonly IMqttClient _mqttClient;
         private readonly IEventRepository _eventRepository;
         private readonly string _topic;
 
-        public MQTTClient(IMqttClient mqttClient, IEventRepository eventRepository, string topic)
+        public MQTTClient_Legacy(IMqttClient mqttClient, IEventRepository eventRepository, string topic)
         {
             try
             {
