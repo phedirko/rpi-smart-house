@@ -9,11 +9,10 @@ namespace RpiSmartHouse.Publisher
     public class Program
     {
         private static IMqttClient _mqttClient;
-        private static string TEMP_TOPIC = "TEMP_RESU";
 
         static void Main(string[] args)
         {
-            MainAsync().GetAwaiter().GetResult();
+            Task.Run(() => MainAsync()).Wait();
         }
 
         static async Task MainAsync()
@@ -29,9 +28,9 @@ namespace RpiSmartHouse.Publisher
 
             while (true)
             {
-                await _mqttClient.PublishAsync(TEMP_TOPIC, $"Current temp is {DateTime.Now.Millisecond / 10} degrees");
+                await _mqttClient.PublishAsync("temperature/kitchen-pub", $"Current temp is {DateTime.Now.Millisecond / 10} degrees");
                 Console.WriteLine("Published!");
-                Thread.Sleep(10000);
+                Thread.Sleep(5001);
             }
         }
     }

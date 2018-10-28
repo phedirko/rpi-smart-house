@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RpiSmartHouse.Monitoring.Api.Contracts.Configuration
 {
@@ -9,7 +6,16 @@ namespace RpiSmartHouse.Monitoring.Api.Contracts.Configuration
     {        
         public ICollection<Network> Networks { get; set; }
 
-        public ICollection<Sensor> Sensors { get; set; }
+        public SensorData SensorData { get; set; }
+
+        public MQTTOptions MQTTOptions { get; set; }
+    }
+
+    public class MQTTOptions
+    {
+        public string Host { get; set; }
+
+        public int Port { get; set; }
     }
 
     public class Network
@@ -24,6 +30,11 @@ namespace RpiSmartHouse.Monitoring.Api.Contracts.Configuration
         public string Name { get; set; }
 
         public string Address { get; set; }
+    }
+
+    public class SensorData
+    {
+        public ICollection<Sensor> Sensors { get; set; }
     }
 
     public class Sensor
