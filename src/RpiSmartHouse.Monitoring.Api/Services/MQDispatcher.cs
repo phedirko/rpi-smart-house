@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using RpiSmartHouse.Monitoring.Api.Contracts.Configuration;
+using RpiSmartHouse.Monitoring.Api.Extensions;
 using RpiSmartHouse.Monitoring.Api.Services.Persistance;
 using Serilog;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,13 +13,14 @@ namespace RpiSmartHouse.Monitoring.Api.Services
     public class MQDispatcher
     {
         private readonly MQTTClientProxy _mqttClientProxy;
-        private readonly SensorDataRepository _sensorDataRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly SensorData _sensorData;
 
         private bool clientConnected = false;
-        public MQDispatcher(MQTTClientProxy mqttClientProxy, IOptions<SensorData> options)
+        public MQDispatcher(MQTTClientProxy mqttClientProxy, IEventRepository eventRepository, IOptions<SensorData> options)
         {
             _mqttClientProxy = mqttClientProxy;
+            _eventRepository = eventRepository;
             _sensorData = options.Value;
         }
 
@@ -32,6 +32,7 @@ namespace RpiSmartHouse.Monitoring.Api.Services
         private async Task RunInternal()
         {
             await _mqttClientProxy.Connect();
+            System.Console.WriteLine("connected");
             await Subscribe();
 
             _mqttClientProxy.RegisterMessageHandler(HandleMessage);
@@ -51,6 +52,8 @@ namespace RpiSmartHouse.Monitoring.Api.Services
             Log.Information($"[Payload]: {eventArgs.ApplicationMessage.ConvertPayloadToString()}");
 
             string text = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload);
+
+            _eventRepository.Add(text);
         }
 
         private async Task HandleDisconnected(MqttClientDisconnectedEventArgs eventArgs)
@@ -59,9 +62,10 @@ namespace RpiSmartHouse.Monitoring.Api.Services
             clientConnected = eventArgs.ClientWasConnected;
         }
 
-        private Task Subscribe()
+        private async Task Subscribe()
         {
-            return Task.WhenAll(_sensorData.Sensors.Select(x => _mqttClientProxy.Subscribe($"{x.Identifier}-pub")));            
+            foreach (string topic in _sensorData.GetTopics())
+                await _mqttClientProxy.Subscribe(topic);
         }
 
         public async Task SendMessage(string topic, string message)

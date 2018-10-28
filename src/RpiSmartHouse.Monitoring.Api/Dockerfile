@@ -10,5 +10,5 @@ RUN dotnet publish -c Release -o out
 FROM microsoft/dotnet:2.1-aspnetcore-runtime-stretch-slim AS runtime
 WORKDIR /app
 
-COPY --from=build /app/out .
+COPY --from=build /app/out ./
 ENTRYPOINT ["dotnet", "RpiSmartHouse.Monitoring.Api.dll"]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RpiSmartHouse.Monitoring.Api.Contracts.Configuration
 {
@@ -39,6 +40,10 @@ namespace RpiSmartHouse.Monitoring.Api.Contracts.Configuration
 
     public class Sensor
     {
+        public string Room { get; set; }
+
+        public string Type { get; set; }
+
         public string Identifier { get; set; }
 
         public string Name { get; set; }

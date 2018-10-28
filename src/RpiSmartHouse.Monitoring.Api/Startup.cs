@@ -39,7 +39,8 @@ namespace RpiSmartHouse.Monitoring.Api
 
             services.AddLogging(lb => lb.AddSerilog(dispose: true));
             services.AddOptions();
-            services.Configure<AppConfig>(Configuration);
+            services.Configure<MQTTOptions>(Configuration.GetSection(nameof(MQTTOptions)));
+            services.Configure<SensorData>(Configuration.GetSection(nameof(SensorData)));
             mqDispatcher = services.GetMQDispatcher();
             mqDispatcher.Start();
             services.AddMvc();
@@ -48,11 +49,6 @@ namespace RpiSmartHouse.Monitoring.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            Log.Logger = new LoggerConfiguration()
-              .Enrich.FromLogContext()
-              .WriteTo.Console()
-              .CreateLogger();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

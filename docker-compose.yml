@@ -38,6 +38,7 @@ services:
       - back
 
   # fake_publisher:
+  #   container_name: rpi_fake_publisher
   #   image: rpi_fake_publihser
   #   build:
   #     context: ./src/RpiSmartHouse.Publisher
